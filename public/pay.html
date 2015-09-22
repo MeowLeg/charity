@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta name="MobileOptimized" content="320">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<!-- site stylesheet -->
+		<link rel="stylesheet" type="text/css" href="css/reset.min.css" />
+		<title>公益</title>
+	</head>
+	<body>
+		<div class="pay p15 cl bbe">
+			<span class="l pay-title mt5 g9">捐助：</span><div class="l orange num mt5">10元 X 1 = 10元</div>
+			<div class="r tc calc">
+				<span class="db bgf5 g3 l mr10 bdc jian">-</span>
+				<input type="tel" max="8" value="1" class="l tc bdc num-input"/>
+				<span class="db bgf5 g3 l ml10 bdc active jia">+</span>
+			</div>
+		</div>
+		<div class="item bg_light">
+			<ul class="item-list">
+				<li class="flex p10">
+					<div class="img"></div>
+					<div class="flex-1 ml15 rel">
+						<header>爱飞翔乡村教师培训计划</header>
+						<p class="mt10 g9 lh18">你的每一份付出都会通过有爱的乡村教师传递给孩子。</p>
+						<p class="mt2 g6 abs"><i class="n assertive">♡</i> 共 <i class="n assertive">500</i> 人捐助</p>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<span class="btn bg_assertive fix pct90 p0 pt10 pb10 pay-btn">捐助</span>
+	</body>
+</html>
+<script src="js/zepto.min.js"></script>
+<script src="js/fastclick.js"></script>
+<script>
+	FastClick.attach(document.body);
+	var num = 1,
+		_jia = $('.jia'),
+		_jian = $('.jian'),
+		price = 10,
+		_input = $('.num-input');
+	//加法
+	_jia.bind('touchstart',function(e){
+		_jian.addClass('active');
+		if(num > 0){
+			num++;
+			_input.val(num);
+		}else if(num >= 99999){
+			_jia.removeClass('active');
+		}
+	})
+	//减法
+	_jian.bind('touchstart',function(e){
+		if(num > 1){
+		 	num--;
+			_input.val(num);
+		} 
+		if(num == 1){
+			_jian.removeClass('active');
+		}
+	})
+	//input手动输入
+	_input.bind('keyup',function(){
+		num = _input.val()
+	})
+</script>
