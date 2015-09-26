@@ -1,12 +1,16 @@
 package main
 
 import (
+	"bytes"
 	sw "charity/switcher"
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"github.com/codegangsta/negroni"
 	"github.com/julienschmidt/httprouter"
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/pingplusplus/pingpp-go/pingpp"
+	"github.com/pingplusplus/pingpp-go/pingpp/charge"
 	"log"
 	"net/http"
 )
@@ -19,11 +23,37 @@ type Ret struct {
 
 func main() {
 	rt := httprouter.New()
-	rt.GET("/ssp", DlmHandler)
+	rt.GET("/charity", DlmHandler)
+	rt.POST("/pay", Pay)
 
 	n := negroni.Classic()
 	n.UseHandler(rt)
 	n.Run(":7063")
+}
+
+func Pay(rw http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	var parmas pingpp.ChargeParams
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(r.Body)
+	json.Unmarshal(buf.Bytes(), &params)
+
+	extra := make(map[string]interface{})
+	extra["success_url"] = "http://127.0.0.1:7063/paySuccess.html"
+	// extra["cancel_url"] = "http://127.0.0.1:7063/payCancel.html"
+
+	params.Currency = "cny"
+	params.Client_ip = r.RemoteAddr
+	params.extra = extra
+
+	ch, err := charge.New(params)
+
+	if err != nil {
+		errs, _ := json.Marshal(err)
+		fmt.Fprint(w, string(errs))
+	} else {
+		chs, _ := json.Marshal(ch)
+		fmt.Fprintln(w, string(chs))
+	}
 }
 
 func DlmHandler(rw http.ResponseWriter, r *http.Request, p httprouter.Params) {

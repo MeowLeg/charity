@@ -6,9 +6,8 @@ import (
 	// "log"
 	"net/http"
 	"strconv"
+	"encoding/json"
 	// "strings"
-	"github.com/pingplusplus/pingpp-go/pingpp"
-	"github.com/pingplusplus/pingpp-go/pingpp/charge"
 	"time"
 )
 
